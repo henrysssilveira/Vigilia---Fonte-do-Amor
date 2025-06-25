@@ -6,21 +6,466 @@
     <title>Vigilia - Fonte do Amor</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-[#1c1c1c]">
+<body class="bg-[#1c1c1c] min-h-screen">
     <header>
         <img src="src/img/Logo - Chagas de amor - Vigilia.png" class="w-auto h-24 mx-auto pt-4">
     </header>
-    <div>
-        <img src="src/img/Untitled-4.png" class="mx-auto pt-6">
-        <!-- <a class="block mx-auto w-fit text-[#1c1c1c] p-5 bg-[#f1e8df] cursor-pointer rounded-full font-black hover:scale-110 transition-transform">Inscrever-se gratuitamente</a>-->
+    
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <img src="src/img/Untitled-4.png" class="mx-auto pt-6 mb-6 sm:mb-8">
+        </div>
 
-        <a class="block mx-auto w-fit text-[#1c1c1c] p-5 bg-[#f1e8df] cursor-pointer rounded-full font-black transition-all duration-500 hover:bg-holographic hover:text-white hover:scale-110 relative overflow-hidden group">
-            <span class="relative z-10">Quero participar!</span>
-            <div class="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" style="background-image: url('src/img/Untitled-5.png')"></div>
-        </a>
-    </div>
-    <div>
+        <div class="text-center">
+            <a id="botao-participar" class="inline-block text-[#1c1c1c] p-4 sm:p-5 bg-[#f1e8df] cursor-pointer rounded-full font-black text-sm sm:text-base transition-all duration-500 hover:bg-holographic hover:text-white hover:scale-110 relative overflow-hidden group mb-6 sm:mb-8">
+                <span class="relative z-10">Quero participar!</span>
+                <div class="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" style="background-image: url('src/img/Untitled-5.png')"></div>
+            </a>
+        </div>
         
-    </div>    
+        <!-- Formulário de Inscrição -->
+        <div id="inscricao-section" class="max-w-sm sm:max-w-md mx-auto rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8 relative overflow-hidden backdrop-blur-md bg-white/20 border border-white/30">
+            <!-- Background holográfico -->
+            <div class="absolute inset-0 bg-cover bg-center opacity-30 rounded-2xl" style="background-image: url('src/img/Untitled-6.png')"></div>
+            
+            <!-- Overlay para glassmorphism -->
+            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"></div>
+            
+            <!-- Conteúdo do formulário -->
+            <div class="relative z-10">
+                <h2 class="text-xl sm:text-2xl font-bold text-white text-center mb-4 sm:mb-6 drop-shadow-lg">Inscreva-se Gratuitamente</h2>
+            
+                <form id="inscricaoForm" class="space-y-3 sm:space-y-4">
+                    <!-- Nome Completo -->
+                    <div>
+                        <label for="nomeCompleto" class="block text-xs sm:text-sm font-semibold text-white mb-1 sm:mb-2 drop-shadow">
+                            Nome Completo *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nomeCompleto" 
+                            name="nomeCompleto" 
+                            required
+                            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-white/30 bg-white/90 backdrop-blur-sm focus:ring-2 focus:ring-white focus:border-white focus:bg-white outline-none transition-all duration-300"
+                            placeholder="Digite seu nome completo"
+                        >
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-xs sm:text-sm font-semibold text-white mb-1 sm:mb-2 drop-shadow">
+                            E-mail *
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required
+                            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-white/30 bg-white/90 backdrop-blur-sm focus:ring-2 focus:ring-white focus:border-white focus:bg-white outline-none transition-all duration-300"
+                            placeholder="seu@email.com"
+                        >
+                    </div>
+
+                    <!-- WhatsApp -->
+                    <div>
+                        <label for="whatsapp" class="block text-xs sm:text-sm font-semibold text-white mb-1 sm:mb-2 drop-shadow">
+                            WhatsApp *
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="whatsapp" 
+                            name="whatsapp" 
+                            required
+                            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-white/30 bg-white/90 backdrop-blur-sm focus:ring-2 focus:ring-white focus:border-white focus:bg-white outline-none transition-all duration-300"
+                            placeholder="(11) 99999-9999"
+                        >
+                    </div>
+
+                    <!-- Paróquia ou Grupo -->
+                    <div>
+                        <label for="paroquia" class="block text-xs sm:text-sm font-semibold text-white mb-1 sm:mb-2 drop-shadow">
+                            Paróquia ou grupo que pertence *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="paroquia" 
+                            name="paroquia"
+                            required
+                            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-white/30 bg-white/90 backdrop-blur-sm focus:ring-2 focus:ring-white focus:border-white focus:bg-white outline-none transition-all duration-300"
+                            placeholder="Nome da paróquia ou grupo"
+                        >
+                    </div>
+
+                    <!-- Botão de Envio -->
+                    <button 
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full text-white p-3 sm:p-4 bg-[#1c1c1c]/80 backdrop-blur-sm cursor-pointer rounded-lg font-bold text-sm sm:text-base transition-all duration-300 hover:bg-[#1c1c1c]/90 hover:scale-105 transform active:scale-95 mt-4 sm:mt-6 border border-white/20"
+                    >
+                        <span id="btnText">Confirmar Inscrição</span>
+                        <div id="btnSpinner" class="hidden animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full ml-2"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Seção de Sucesso (inicialmente oculta) -->
+        <div id="success-section" class="max-w-sm sm:max-w-md mx-auto rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8 relative overflow-hidden backdrop-blur-md bg-green-500/20 border border-green-400/30 hidden">
+            <!-- Background holográfico -->
+            <div class="absolute inset-0 bg-cover bg-center opacity-20 rounded-2xl" style="background-image: url('src/img/Untitled-6.png')"></div>
+            
+            <!-- Overlay para glassmorphism -->
+            <div class="absolute inset-0 bg-gradient-to-br from-green-400/20 to-transparent rounded-2xl"></div>
+            
+            <!-- Conteúdo do sucesso -->
+            <div class="relative z-10 text-center">
+                <div class="text-green-300 text-4xl mb-4">✅</div>
+                <h2 class="text-xl sm:text-2xl font-bold text-white mb-4 drop-shadow-lg">Inscrição Confirmada!</h2>
+                <p class="text-white/90 mb-6 text-sm sm:text-base">Você receberá um email de confirmação em breve com todas as informações.</p>
+                
+                <!-- QR Code Section -->
+                <div id="qr-container" class="bg-white/90 backdrop-blur-sm rounded-xl p-4 mb-6">
+                    <h3 class="text-[#1c1c1c] font-bold mb-3 text-sm sm:text-base">🎟️ Seu QR Code de Check-in</h3>
+                    <img id="qr-image" class="w-32 h-32 sm:w-40 sm:h-40 mx-auto border-2 border-gray-300 rounded-lg mb-3" alt="QR Code">
+                    <p class="text-[#1c1c1c] text-xs sm:text-sm mb-2">
+                        <strong>ID:</strong> <span id="qr-id" class="font-mono bg-gray-100 px-2 py-1 rounded"></span>
+                    </p>
+                    <p class="text-gray-600 text-xs">Apresente este código na entrada do evento</p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-2 mt-4">
+                        <button id="download-qr" class="flex-1 bg-[#1c1c1c] text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#2c2c2c] transition-colors">
+                            📱 Baixar QR
+                        </button>
+                        <button id="share-qr" class="flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors">
+                            📤 Compartilhar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Group Button -->
+                <a id="whatsapp-btn" href="#" target="_blank" class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105">
+                    💬 Entrar no Grupo WhatsApp
+                </a>
+                
+                <button id="nova-inscricao" class="block w-full mt-4 text-white/80 hover:text-white text-sm underline">
+                    Fazer nova inscrição
+                </button>
+            </div>
+        </div>
+
+        <!-- Seção de Erro (inicialmente oculta) -->
+        <div id="error-section" class="max-w-sm sm:max-w-md mx-auto rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl mb-6 sm:mb-8 relative overflow-hidden backdrop-blur-md bg-red-500/20 border border-red-400/30 hidden">
+            <div class="relative z-10 text-center">
+                <div class="text-red-300 text-4xl mb-4">❌</div>
+                <h2 class="text-xl sm:text-2xl font-bold text-white mb-4 drop-shadow-lg">Erro na Inscrição</h2>
+                <p id="error-message" class="text-white/90 mb-6 text-sm sm:text-base"></p>
+                
+                <button id="tentar-novamente" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold text-sm sm:text-base transition-all duration-300">
+                    Tentar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO DA API DO GOOGLE APPS SCRIPT
+        // ============================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxetIw88bIViMrsgBCWF58W6ZYXTCWTQjsIw6aePLDaeGyLiB5lOzfCzxCZ_e1nVEgX/exec'; // ⚠️ SUBSTITUA PELA SUA URL
+        const WHATSAPP_GROUP = 'https://chat.whatsapp.com/Fo3FvTjrG67HfhrJGTgjM3'; // ⚠️ SUBSTITUA PELO SEU LINK
+
+        // ============================================
+        // ELEMENTOS DO DOM
+        // ============================================
+        const formulario = document.getElementById('inscricaoForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const inscricaoSection = document.getElementById('inscricao-section');
+        const successSection = document.getElementById('success-section');
+        const errorSection = document.getElementById('error-section');
+
+        // ============================================
+        // FUNÇÃO PARA ENVIAR DADOS PARA A API
+        // ============================================
+        async function enviarParaAPI(dados) {
+            try {
+                console.log('🚀 Enviando dados para API...', dados);
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dados)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                console.log('✅ Resposta da API:', resultado);
+                
+                return resultado;
+                
+            } catch (erro) {
+                console.error('❌ Erro ao enviar para API:', erro);
+                throw erro;
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO PARA GERAR QR CODE LOCAL (FALLBACK)
+        // ============================================
+        function gerarQRCodeLocal(dados) {
+            const idUnico = `VIG${Date.now()}_${dados.nomeCompleto.replace(/\s/g, '').substring(0, 5)}`;
+            
+            const dadosQR = {
+                id: idUnico,
+                nome: dados.nomeCompleto,
+                email: dados.email,
+                whatsapp: dados.whatsapp,
+                paroquia: dados.paroquia,
+                evento: "Vigilia_Fonte_do_Amor",
+                data: new Date().toISOString()
+            };
+            
+            const textoQR = JSON.stringify(dadosQR);
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(textoQR)}&bgcolor=FFFFFF&color=000000&margin=10`;
+            
+            return {
+                url: qrCodeUrl,
+                id: idUnico,
+                dados: textoQR
+            };
+        }
+
+        // ============================================
+        // FUNÇÕES DE UI
+        // ============================================
+        function mostrarLoading() {
+            submitBtn.disabled = true;
+            btnText.textContent = 'Enviando...';
+            btnSpinner.classList.remove('hidden');
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        }
+
+        function esconderLoading() {
+            submitBtn.disabled = false;
+            btnText.textContent = 'Confirmar Inscrição';
+            btnSpinner.classList.add('hidden');
+            submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+
+        function mostrarSucesso(qrInfo) {
+            // Esconder formulário
+            inscricaoSection.classList.add('hidden');
+            errorSection.classList.add('hidden');
+            
+            // Configurar QR Code
+            if (qrInfo) {
+                document.getElementById('qr-image').src = qrInfo.url;
+                document.getElementById('qr-id').textContent = qrInfo.id;
+                
+                // Configurar botões
+                document.getElementById('download-qr').onclick = () => baixarQRCode(qrInfo.url, `QRCode_${qrInfo.id}.png`);
+                document.getElementById('share-qr').onclick = () => compartilharQR(qrInfo);
+            }
+            
+            // Configurar link do WhatsApp
+            document.getElementById('whatsapp-btn').href = WHATSAPP_GROUP;
+            
+            // Mostrar seção de sucesso
+            successSection.classList.remove('hidden');
+            
+            // Scroll suave
+            successSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function mostrarErro(mensagem) {
+            // Esconder outras seções
+            successSection.classList.add('hidden');
+            
+            // Configurar mensagem de erro
+            document.getElementById('error-message').textContent = mensagem;
+            
+            // Mostrar seção de erro
+            errorSection.classList.remove('hidden');
+            
+            // Scroll suave
+            errorSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetarFormulario() {
+            // Mostrar formulário
+            inscricaoSection.classList.remove('hidden');
+            successSection.classList.add('hidden');
+            errorSection.classList.add('hidden');
+            
+            // Limpar formulário
+            formulario.reset();
+            
+            // Scroll para formulário
+            inscricaoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ============================================
+        // FUNÇÕES UTILITÁRIAS
+        // ============================================
+        function baixarQRCode(url, nomeArquivo) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = nomeArquivo;
+            link.click();
+        }
+
+        function compartilharQR(qrInfo) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Meu QR Code - Vigília Fonte do Amor',
+                    text: `Meu código de check-in: ${qrInfo.id}`,
+                    url: qrInfo.url
+                });
+            } else {
+                // Fallback: copiar para clipboard
+                navigator.clipboard.writeText(`Meu QR Code da Vigília: ${qrInfo.url}`);
+                alert('Link do QR Code copiado para a área de transferência!');
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        // Scroll suave para a seção de inscrição
+        document.getElementById('botao-participar').addEventListener('click', function(e) {
+            e.preventDefault();
+            inscricaoSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        });
+
+        // Formatação automática do WhatsApp
+        document.getElementById('whatsapp').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                if (value.length < 14) {
+                    value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Envio do formulário
+        formulario.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Coleta os dados do formulário
+            const dados = {
+                nomeCompleto: document.getElementById('nomeCompleto').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                celular: document.getElementById('whatsapp').value.trim(), // Mapeamento para compatibilidade
+                paroquia: document.getElementById('paroquia').value.trim()
+            };
+            
+            console.log('📝 Dados coletados:', dados);
+            
+            // Validações básicas
+            if (!dados.nomeCompleto || !dados.email || !dados.celular || !dados.paroquia) {
+                mostrarErro('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+            
+            // Validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(dados.email)) {
+                mostrarErro('Por favor, digite um email válido!');
+                return;
+            }
+            
+            // Validar WhatsApp
+            if (dados.celular.length < 14) {
+                mostrarErro('Por favor, digite um WhatsApp válido!');
+                return;
+            }
+            
+            // Mostrar loading
+            mostrarLoading();
+            
+            try {
+                // Enviar para API do Google Apps Script
+                console.log('🚀 Enviando para Google Apps Script...');
+                const resultado = await enviarParaAPI(dados);
+                
+                if (resultado.sucesso) {
+                    // Sucesso!
+                    console.log('✅ Inscrição processada com sucesso!');
+                    
+                    // Usar QR da API ou gerar local
+                    const qrInfo = resultado.qrCode || gerarQRCodeLocal(dados);
+                    
+                    // Mostrar seção de sucesso
+                    mostrarSucesso(qrInfo);
+                    
+                } else {
+                    // Erro da API
+                    throw new Error(resultado.erro || 'Erro desconhecido na API');
+                }
+                
+            } catch (erro) {
+                console.error('❌ Erro no envio:', erro);
+                
+                // Verificar se é erro de rede ou API
+                if (erro.message.includes('fetch') || erro.message.includes('network')) {
+                    // Erro de rede - mostrar QR local como fallback
+                    console.log('🔄 Usando modo offline...');
+                    const qrLocal = gerarQRCodeLocal(dados);
+                    mostrarSucesso(qrLocal);
+                    
+                    // Avisar sobre o modo offline
+                    setTimeout(() => {
+                        alert('⚠️ Modo offline ativado. Sua inscrição foi salva localmente. Tente reconectar-se à internet.');
+                    }, 1000);
+                } else {
+                    // Erro de validação ou outro
+                    mostrarErro(erro.message || 'Erro ao processar inscrição. Tente novamente.');
+                }
+            } finally {
+                // Sempre esconder loading
+                esconderLoading();
+            }
+        });
+
+        // Botão "Nova Inscrição"
+        document.getElementById('nova-inscricao').addEventListener('click', resetarFormulario);
+
+        // Botão "Tentar Novamente"
+        document.getElementById('tentar-novamente').addEventListener('click', function() {
+            errorSection.classList.add('hidden');
+            inscricaoSection.classList.remove('hidden');
+            inscricaoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Site da Vigília carregado!');
+            console.log('📧 API URL:', API_URL);
+            console.log('💬 WhatsApp Group:', WHATSAPP_GROUP);
+            
+            // Verificar se as URLs estão configuradas
+            if (API_URL.includes('SEU_ID_AQUI')) {
+                console.warn('⚠️ ATENÇÃO: Configure a URL da API do Google Apps Script!');
+            }
+            
+            if (WHATSAPP_GROUP.includes('SEU-LINK-AQUI')) {
+                console.warn('⚠️ ATENÇÃO: Configure o link do grupo do WhatsApp!');
+            }
+        });
+    </script>
 </body>
 </html>
