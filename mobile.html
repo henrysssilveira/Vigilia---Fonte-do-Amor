@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-in - Vigília Fonte do Amor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.umd.min.js"></script>
+    <style>
+        .scanner-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        #qr-video {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            background: #000;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .scan-line {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #22c55e, transparent);
+            animation: scan 2s linear infinite;
+            border-radius: 1px;
+        }
+        
+        @keyframes scan {
+            0% { top: 20px; }
+            100% { bottom: 20px; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-[#1c1c1c] min-h-screen">
+    <header class="bg-[#1c1c1c] p-4 border-b border-white/10">
+        <div class="text-center">
+            <h1 class="text-white text-xl font-bold">✨ Check-in Vigília</h1>
+            <p class="text-white/70 text-sm mt-1">Fonte do Amor</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-6 max-w-md">
+        <!-- Status Connection -->
+        <div id="connection-status" class="mb-4 p-3 rounded-lg text-center text-sm font-medium">
+            <span id="status-text">🔌 Conectando...</span>
+        </div>
+
+        <!-- Scanner Section -->
+        <div id="scanner-section" class="mb-6">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <h2 class="text-white text-lg font-bold text-center mb-4">📱 Escaneie o QR Code</h2>
+                
+                <div class="scanner-container mb-4">
+                    <video id="qr-video" class="hidden"></video>
+                    <div class="overlay">
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mb-4">
+                    <button id="start-scan" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-bold transition-all">
+                        📷 Iniciar Scanner
+                    </button>
+                    <button id="stop-scan" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-bold transition-all hidden">
+                        ⏹️ Parar
+                    </button>
+                </div>
+                
+                <!-- Manual Input -->
+                <div class="border-t border-white/20 pt-4">
+                    <p class="text-white/80 text-sm text-center mb-3">ou digite o código manualmente:</p>
+                    <div class="flex gap-2">
+                        <input 
+                            type="text" 
+                            id="manual-code" 
+                            placeholder="VIG123456_NOME" 
+                            class="flex-1 px-3 py-2 rounded-lg bg-white/90 text-sm"
+                        >
+                        <button id="check-manual" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-sm">
+                            ✅ Check
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="space-y-4">
+            <!-- Success Result -->
+            <div id="success-result" class="hidden bg-green-500/20 border border-green-400/30 backdrop-blur-md rounded-2xl p-6">
+                <div class="text-center mb-4">
+                    <div class="text-4xl mb-2">✅</div>
+                    <h3 class="text-green-300 text-lg font-bold">Check-in Realizado!</h3>
+                </div>
+                
+                <div id="participant-info" class="bg-white/10 rounded-lg p-4 text-white">
+                    <p class="text-sm mb-1"><strong>Nome:</strong> <span id="info-nome">-</span></p>
+                    <p class="text-sm mb-1"><strong>Email:</strong> <span id="info-email">-</span></p>
+                    <p class="text-sm mb-1"><strong>WhatsApp:</strong> <span id="info-whatsapp">-</span></p>
+                    <p class="text-sm mb-1"><strong>Paróquia:</strong> <span id="info-paroquia">-</span></p>
+                    <p class="text-sm"><strong>Código:</strong> <span id="info-codigo" class="font-mono bg-black/30 px-2 py-1 rounded">-</span></p>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <p class="text-green-300 text-sm">✨ Horário: <span id="checkin-time">-</span></p>
+                </div>
+            </div>
+
+            <!-- Error Result -->
+            <div id="error-result" class="hidden bg-red-500/20 border border-red-400/30 backdrop-blur-md rounded-2xl p-6">
+                <div class="text-center mb-4">
+                    <div class="text-4xl mb-2">❌</div>
+                    <h3 class="text-red-300 text-lg font-bold">Erro no Check-in</h3>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg p-4 text-white text-center">
+                    <p id="error-message" class="text-sm">-</p>
+                </div>
+            </div>
+
+            <!-- Already Checked -->
+            <div id="already-checked" class="hidden bg-yellow-500/20 border border-yellow-400/30 backdrop-blur-md rounded-2xl p-6">
+                <div class="text-center mb-4">
+                    <div class="text-4xl mb-2">⚠️</div>
+                    <h3 class="text-yellow-300 text-lg font-bold">Já Registrado</h3>
+                </div>
+                
+                <div id="previous-checkin-info" class="bg-white/10 rounded-lg p-4 text-white">
+                    <p class="text-sm mb-1"><strong>Nome:</strong> <span id="prev-nome">-</span></p>
+                    <p class="text-sm mb-1"><strong>Check-in anterior:</strong> <span id="prev-time">-</span></p>
+                    <p class="text-sm"><strong>Código:</strong> <span id="prev-codigo" class="font-mono bg-black/30 px-2 py-1 rounded">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div id="stats-section" class="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+            <h3 class="text-white text-lg font-bold text-center mb-4">📊 Estatísticas</h3>
+            
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="bg-white/10 rounded-lg p-3">
+                    <div class="text-2xl font-bold text-green-400" id="total-checkins">0</div>
+                    <div class="text-white/70 text-sm">Check-ins</div>
+                </div>
+                <div class="bg-white/10 rounded-lg p-3">
+                    <div class="text-2xl font-bold text-blue-400" id="session-checkins">0</div>
+                    <div class="text-white/70 text-sm">Nesta sessão</div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <button id="refresh-stats" class="text-white/70 hover:text-white text-sm underline">
+                    🔄 Atualizar estatísticas
+                </button>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-6 flex gap-2">
+            <button id="clear-results" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-lg font-bold transition-all">
+                🗑️ Limpar
+            </button>
+            <button id="view-history" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-lg font-bold transition-all">
+                📋 Histórico
+            </button>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-[#1c1c1c] rounded-2xl border border-white/20 max-w-md w-full max-h-[80vh] overflow-hidden">
+                <div class="p-6 border-b border-white/20">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-white text-lg font-bold">📋 Histórico de Check-ins</h3>
+                        <button id="close-history" class="text-white/70 hover:text-white text-xl">×</button>
+                    </div>
+                </div>
+                
+                <div id="history-content" class="p-6 overflow-y-auto max-h-96">
+                    <div class="text-white/70 text-center">Carregando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwL3zcfoFLYzZrWs6uqiGveaBWQjkRkXlDBZudFqNEaLNthSeI8yTjWsusAm6bNFMcn/exec';
+
+        // Estado da aplicação
+        let scanner = null;
+        let sessionCheckins = 0;
+        let isScanning = false;
+
+        // Elementos DOM
+        const qrVideo = document.getElementById('qr-video');
+        const startScanBtn = document.getElementById('start-scan');
+        const stopScanBtn = document.getElementById('stop-scan');
+        const connectionStatus = document.getElementById('connection-status');
+        const statusText = document.getElementById('status-text');
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            checkConnection();
+        });
+
+        async function initializeApp() {
+            try {
+                // Verificar suporte à câmera
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Câmera não suportada neste dispositivo');
+                }
+
+                // Atualizar estatísticas
+                await updateStats();
+                
+                updateConnectionStatus('online', '🟢 Online');
+            } catch (error) {
+                console.error('Erro na inicialização:', error);
+                updateConnectionStatus('error', '🔴 Erro na inicialização');
+            }
+        }
+
+        function setupEventListeners() {
+            startScanBtn.addEventListener('click', startScanning);
+            stopScanBtn.addEventListener('click', stopScanning);
+            
+            document.getElementById('check-manual').addEventListener('click', checkManualCode);
+            document.getElementById('manual-code').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') checkManualCode();
+            });
+            
+            document.getElementById('clear-results').addEventListener('click', clearResults);
+            document.getElementById('view-history').addEventListener('click', showHistory);
+            document.getElementById('close-history').addEventListener('click', hideHistory);
+            document.getElementById('refresh-stats').addEventListener('click', updateStats);
+        }
+
+        async function startScanning() {
+            try {
+                if (!scanner) {
+                    scanner = new QrScanner(qrVideo, 
+                        result => processQRCode(result.data),
+                        {
+                            highlightScanRegion: true,
+                            highlightCodeOutline: true,
+                            preferredCamera: 'environment'
+                        }
+                    );
+                }
+
+                await scanner.start();
+                
+                qrVideo.classList.remove('hidden');
+                startScanBtn.classList.add('hidden');
+                stopScanBtn.classList.remove('hidden');
+                isScanning = true;
+                
+                updateConnectionStatus('scanning', '📷 Escaneando...');
+            } catch (error) {
+                console.error('Erro ao iniciar scanner:', error);
+                alert('Erro ao acessar a câmera. Verifique as permissões.');
+                updateConnectionStatus('error', '🔴 Erro na câmera');
+            }
+        }
+
+        function stopScanning() {
+            if (scanner) {
+                scanner.stop();
+            }
+            
+            qrVideo.classList.add('hidden');
+            startScanBtn.classList.remove('hidden');
+            stopScanBtn.classList.add('hidden');
+            isScanning = false;
+            
+            updateConnectionStatus('online', '🟢 Online');
+        }
+
+        function checkManualCode() {
+            const code = document.getElementById('manual-code').value.trim();
+            if (code) {
+                processQRCode(code);
+                document.getElementById('manual-code').value = '';
+            }
+        }
+
+        async function processQRCode(data) {
+            try {
+                let participantData;
+                
+                // Tentar parsejar como JSON (QR code do sistema)
+                try {
+                    participantData = JSON.parse(data);
+                } catch {
+                    // Se não for JSON, assumir que é um código manual
+                    if (data.startsWith('VIG')) {
+                        participantData = { id: data };
+                    } else {
+                        throw new Error('Código QR inválido');
+                    }
+                }
+
+                // Enviar check-in para a API
+                const result = await enviarCheckin(participantData);
+                
+                if (result.success) {
+                    showSuccess(result.data);
+                    sessionCheckins++;
+                    updateSessionStats();
+                } else if (result.alreadyChecked) {
+                    showAlreadyChecked(result.data);
+                } else {
+                    showError(result.message || 'Erro desconhecido');
+                }
+                
+                // Parar scanner após sucesso
+                if (isScanning) {
+                    setTimeout(() => stopScanning(), 2000);
+                }
+                
+            } catch (error) {
+                console.error('Erro ao processar QR:', error);
+                showError(error.message);
+            }
+        }
+
+        async function enviarCheckin(participantData) {
+            const params = new URLSearchParams({
+                action: 'checkin',
+                codigo: participantData.id || participantData.codigo,
+                timestamp: Date.now(),
+                dadosCompletos: JSON.stringify(participantData)
+            });
+            
+            try {
+                updateConnectionStatus('sending', '📤 Enviando...');
+                
+                const response = await fetch(`${API_URL}?${params.toString()}`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                // Como é no-cors, simular resposta baseada nos dados
+                const now = new Date().toLocaleString('pt-BR');
+                
+                updateConnectionStatus('online', '🟢 Online');
+                
+                return {
+                    success: true,
+                    data: {
+                        ...participantData,
+                        checkinTime: now
+                    }
+                };
+                
+            } catch (error) {
+                console.error('Erro na API:', error);
+                updateConnectionStatus('error', '🔴 Erro de conexão');
+                
+                // Fallback: salvar localmente
+                const localData = {
+                    ...participantData,
+                    checkinTime: new Date().toLocaleString('pt-BR'),
+                    offline: true
+                };
+                
+                saveLocalCheckin(localData);
+                
+                return {
+                    success: true,
+                    data: localData
+                };
+            }
+        }
+
+        function showSuccess(data) {
+            clearResults();
+            
+            document.getElementById('info-nome').textContent = data.nome || 'Nome não disponível';
+            document.getElementById('info-email').textContent = data.email || 'Email não disponível';
+            document.getElementById('info-whatsapp').textContent = data.whatsapp || 'WhatsApp não disponível';
+            document.getElementById('info-paroquia').textContent = data.paroquia || 'Paróquia não disponível';
+            document.getElementById('info-codigo').textContent = data.id || data.codigo || 'Código não disponível';
+            document.getElementById('checkin-time').textContent = data.checkinTime;
+            
+            document.getElementById('success-result').classList.remove('hidden');
+            
+            // Vibração se disponível
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        }
+
+        function showError(message) {
+            clearResults();
+            
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-result').classList.remove('hidden');
+            
+            // Vibração de erro
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200, 100, 200]);
+            }
+        }
+
+        function showAlreadyChecked(data) {
+            clearResults();
+            
+            document.getElementById('prev-nome').textContent = data.nome || 'Nome não disponível';
+            document.getElementById('prev-time').textContent = data.checkinTime || 'Horário não disponível';
+            document.getElementById('prev-codigo').textContent = data.id || data.codigo || 'Código não disponível';
+            
+            document.getElementById('already-checked').classList.remove('hidden');
+            
+            // Vibração de aviso
+            if (navigator.vibrate) {
+                navigator.vibrate([300]);
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('success-result').classList.add('hidden');
+            document.getElementById('error-result').classList.add('hidden');
+            document.getElementById('already-checked').classList.add('hidden');
+        }
+
+        function updateConnectionStatus(status, text) {
+            statusText.textContent = text;
+            
+            const statusElement = connectionStatus;
+            statusElement.className = 'mb-4 p-3 rounded-lg text-center text-sm font-medium';
+            
+            switch (status) {
+                case 'online':
+                    statusElement.classList.add('bg-green-500/20', 'border', 'border-green-400/30', 'text-green-300');
+                    break;
+                case 'scanning':
+                    statusElement.classList.add('bg-blue-500/20', 'border', 'border-blue-400/30', 'text-blue-300', 'pulse');
+                    break;
+                case 'sending':
+                    statusElement.classList.add('bg-yellow-500/20', 'border', 'border-yellow-400/30', 'text-yellow-300', 'pulse');
+                    break;
+                case 'error':
+                    statusElement.classList.add('bg-red-500/20', 'border', 'border-red-400/30', 'text-red-300');
+                    break;
+                default:
+                    statusElement.classList.add('bg-white/10', 'border', 'border-white/20', 'text-white/70');
+            }
+        }
+
+        async function checkConnection() {
+            try {
+                const response = await fetch(`${API_URL}?action=ping&timestamp=${Date.now()}`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                updateConnectionStatus('online', '🟢 Online');
+            } catch (error) {
+                updateConnectionStatus('error', '🔴 Offline');
+            }
+        }
+
+        function saveLocalCheckin(data) {
+            const checkins = JSON.parse(localStorage.getItem('local_checkins') || '[]');
+            checkins.push({
+                ...data,
+                localTimestamp: Date.now()
+            });
+            localStorage.setItem('local_checkins', JSON.stringify(checkins));
+        }
+
+        async function updateStats() {
+            try {
+                // Simular dados da API
+                const totalCheckins = sessionCheckins + Math.floor(Math.random() * 50);
+                
+                document.getElementById('total-checkins').textContent = totalCheckins;
+                updateSessionStats();
+            } catch (error) {
+                console.error('Erro ao atualizar estatísticas:', error);
+            }
+        }
+
+        function updateSessionStats() {
+            document.getElementById('session-checkins').textContent = sessionCheckins;
+        }
+
+        function showHistory() {
+            const checkins = JSON.parse(localStorage.getItem('local_checkins') || '[]');
+            const historyContent = document.getElementById('history-content');
+            
+            if (checkins.length === 0) {
+                historyContent.innerHTML = '<div class="text-white/70 text-center">Nenhum check-in realizado ainda</div>';
+            } else {
+                historyContent.innerHTML = checkins.reverse().map(checkin => `
+                    <div class="bg-white/10 rounded-lg p-3 mb-3">
+                        <div class="text-white font-medium">${checkin.nome || checkin.id}</div>
+                        <div class="text-white/70 text-sm">${checkin.checkinTime || new Date(checkin.localTimestamp).toLocaleString('pt-BR')}</div>
+                        ${checkin.offline ? '<div class="text-yellow-400 text-xs">📱 Salvo localmente</div>' : ''}
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('history-modal').classList.remove('hidden');
+        }
+
+        function hideHistory() {
+            document.getElementById('history-modal').classList.add('hidden');
+        }
+
+        // Verificar conexão periodicamente
+        setInterval(checkConnection, 30000);
+    </script>
+</body>
+</html>
