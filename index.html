@@ -91,9 +91,10 @@
                     <button 
                         type="submit"
                         id="submitBtn"
-                        class="w-full text-white p-3 sm:p-4 bg-[#1c1c1c]/80 backdrop-blur-sm cursor-pointer rounded-lg font-bold text-sm sm:text-base transition-all duration-300 hover:bg-[#1c1c1c]/90 hover:scale-105 transform activate:bg-green-500 active:scale-95 mt-4 sm:mt-6 border border-white/20"
+                        class="w-full text-white p-3 sm:p-4 bg-[#1c1c1c]/80 backdrop-blur-sm cursor-pointer rounded-lg font-bold text-sm sm:text-base transition-all duration-300 hover:bg-[#1c1c1c]/90 hover:scale-105 transform active:scale-95 mt-4 sm:mt-6 border border-white/20"
                     >
                         <span id="btnText">Confirmar Inscrição</span>
+                        <div id="btnSpinner" class="hidden animate-spin inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full ml-2"></div>
                     </button>
                 </form>
             </div>
@@ -145,6 +146,7 @@
         const formulario = document.getElementById('inscricaoForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
         const inscricaoSection = document.getElementById('inscricao-section');
         const successSection = document.getElementById('success-section');
 
@@ -248,12 +250,14 @@
         function mostrarLoading() {
             submitBtn.disabled = true;
             btnText.textContent = 'Enviando...';
+            btnSpinner.classList.remove('hidden');
             submitBtn.classList.add('opacity-75');
         }
 
         function esconderLoading() {
             submitBtn.disabled = false;
             btnText.textContent = 'Confirmar Inscrição';
+            btnSpinner.classList.add('hidden');
             submitBtn.classList.remove('opacity-75');
         }
 
