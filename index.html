@@ -145,7 +145,6 @@
         const formulario = document.getElementById('inscricaoForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
-        const btnSpinner = document.getElementById('btnSpinner');
         const inscricaoSection = document.getElementById('inscricao-section');
         const successSection = document.getElementById('success-section');
 
@@ -249,14 +248,12 @@
         function mostrarLoading() {
             submitBtn.disabled = true;
             btnText.textContent = 'Enviando...';
-            btnSpinner.classList.remove('hidden');
             submitBtn.classList.add('opacity-75');
         }
 
         function esconderLoading() {
             submitBtn.disabled = false;
             btnText.textContent = 'Confirmar Inscrição';
-            btnSpinner.classList.add('hidden');
             submitBtn.classList.remove('opacity-75');
         }
 
